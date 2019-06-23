@@ -26,6 +26,7 @@ public class nastySurprise implements ActionListener {
 	
 	public void run() {
 		trick.addActionListener(this);
+		treat.addActionListener(this);
 		panel.add(treat);
 		panel.add(trick);
 		frame.add(panel);
@@ -59,7 +60,7 @@ JButton buttonPressed = (JButton) arg0.getSource();
 		if(arg0.getSource()==trick){
 			showPictureFromTheInternet("https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12231413/Labrador-Retriever-MP.jpg");
 		}else if(arg0.getSource()==treat){
-			showPictureFromTheInternet("http://www.scaryforkids.com/pics/scary-clown.jpg");
+			showPictureFromTheInternet("http://static-23.sinclairstoryline.com/resources/media/d60d4f1c-9fcc-4ae4-8058-05e885080e19-large16x9_momo2.PNG?1551379953599");
 		}
 	}
 
