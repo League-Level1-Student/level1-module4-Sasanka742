@@ -95,7 +95,7 @@ public class SimonSays extends KeyAdapter {
 		// 23. Dispose of the frame
 		frame.dispose();
 		// 24. Call the showImage method to show a new image
-		if(tries>2) {
+		if(tries>9) {
 			speak("Score: "+score);
 			frame.getDefaultCloseOperation();
 			frame.dispose();
