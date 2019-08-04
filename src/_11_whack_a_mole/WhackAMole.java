@@ -1,16 +1,26 @@
 package _11_whack_a_mole;
 
+import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class WhackAMole {
+public class WhackAMole implements ActionListener {
+	int score = 0;
+	int tries = 0;
+	int missed = 0;
+	
+	Date time =new Date();
+	
 	JFrame frame = new JFrame("Whack A Button");
 	JPanel col1 = new JPanel();
 	JPanel col2 = new JPanel();
@@ -90,16 +100,73 @@ public class WhackAMole {
 		//add main panel to frame	
 		frame.add(main);
 		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		//adds all the buttons to a list
+		ArrayList<JButton> buttons = new ArrayList<JButton>();
+		
+		buttons.add(a1);buttons.add(a2);buttons.add(a3);buttons.add(a4);
+		buttons.add(a5);buttons.add(a6);buttons.add(a7);buttons.add(a8);
+		
+		buttons.add(b1);buttons.add(b2);buttons.add(b3);buttons.add(b4);
+		buttons.add(b5);buttons.add(b6);buttons.add(b7);buttons.add(b8);
+		
+		buttons.add(c1);buttons.add(c2);buttons.add(c3);buttons.add(c4);
+		buttons.add(c5);buttons.add(c6);buttons.add(c7);buttons.add(c8);
+		
+		for(int i=0;i<1;i++) {
+			int num = new Random().nextInt(25);
+			buttons.get(num).setText("mole!");
+			for(JButton button: buttons) {
+				button.addActionListener(this);
+			}
+		}
+		
 		
 	}
 	
 	public void drawButton(int num) {
 		run();
+			
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		
+		// TODO Auto-generated method stub
+		JButton clicked = (JButton)e.getSource();
 		
+		if(clicked.getText().equals("mole!")) {
+			score++;
+			frame.dispose();
+			clicked.setText("");
+			run();
+			
+		}else {
+			speak("Missed!");
+			missed++;
+			frame.getDefaultCloseOperation();
+		}
+		
+	
 		
 	}
 	
+	void speak(String words) {
+	     try {
+	          Runtime.getRuntime().exec("say " + words).waitFor();
+	     } catch (Exception e) {
+	          e.printStackTrace();
+	     }
+	}
+	
+	private void endGame(Date timeAtStart, int molesWhacked) {
+	     Date timeAtEnd = new Date();
+	     JOptionPane.showMessageDialog(null, "Your whack rate is "
+	          + ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked)
+	          + " moles per second.");
+	}
+
 	//insert all buttons in a list
 	
 	// make a for loop for the array . get a random number in the list(position)
