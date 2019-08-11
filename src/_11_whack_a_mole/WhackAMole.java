@@ -19,7 +19,7 @@ public class WhackAMole implements ActionListener {
 	int tries = 0;
 	int missed = 0;
 	
-	Date time =new Date();
+	Date time;
 	
 	JFrame frame = new JFrame("Whack A Button");
 	JPanel col1 = new JPanel();
@@ -28,50 +28,28 @@ public class WhackAMole implements ActionListener {
 	
 	JPanel main = new JPanel();
 	
-	//column 1
-	JButton a1 = new JButton();
-	JButton a2 = new JButton();
-	JButton a3 = new JButton();
-	JButton a4 = new JButton();
-	JButton a5 = new JButton();
-	JButton a6 = new JButton();
-	JButton a7 = new JButton();
-	JButton a8 = new JButton();
 	
-	//column 2
-	JButton b1 = new JButton();
-	JButton b2 = new JButton();
-	JButton b3 = new JButton();
-	JButton b4 = new JButton();
-	JButton b5 = new JButton();
-	JButton b6 = new JButton();
-	JButton b7 = new JButton();
-	JButton b8 = new JButton();
-	
-	//column 3
-	JButton c1 = new JButton();
-	JButton c2 = new JButton();
-	JButton c3 = new JButton();
-	JButton c4 = new JButton();
-	JButton c5 = new JButton();
-	JButton c6 = new JButton();
-	JButton c7 = new JButton();
-	JButton c8 = new JButton();
 	
 	public void run() {
 		
+		ArrayList<JButton> buttons = new ArrayList<JButton>();
+		
+		for(int i=0;i<24;i++) {
+			JButton button = new JButton();
+			buttons.add(button);
+			button.setText("");
+			if(i<8) {
+				col1.add(button);
+			}else if(i>7&&i<16) {
+				col2.add(button);
+			}else if(i>15) {
+				col3.add(button);
+			}
+			button.addActionListener(this);
+		}
+		
 		frame.setSize(250,300);
-		
-		//insert buttons in columns
-		col1.add(a1);col1.add(a2);col1.add(a3);col1.add(a4);
-		col1.add(a5);col1.add(a6);col1.add(a7);col1.add(a8);
-		
 
-		col2.add(b1);col2.add(b2);col2.add(b3);col2.add(b4);
-		col2.add(b5);col2.add(b6);col2.add(b7);col2.add(b8);
-		
-		col3.add(c1);col3.add(c2);col3.add(c3);col3.add(c4);
-		col3.add(c5);col3.add(c6);col3.add(c7);col3.add(c8);
 		
 		/**for()
 		* JButton temp;
@@ -100,35 +78,15 @@ public class WhackAMole implements ActionListener {
 		//add main panel to frame	
 		frame.add(main);
 		frame.setVisible(true);
+		time = new Date();
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		//adds all the buttons to a list
-		ArrayList<JButton> buttons = new ArrayList<JButton>();
-		
-		buttons.add(a1);buttons.add(a2);buttons.add(a3);buttons.add(a4);
-		buttons.add(a5);buttons.add(a6);buttons.add(a7);buttons.add(a8);
-		
-		buttons.add(b1);buttons.add(b2);buttons.add(b3);buttons.add(b4);
-		buttons.add(b5);buttons.add(b6);buttons.add(b7);buttons.add(b8);
-		
-		buttons.add(c1);buttons.add(c2);buttons.add(c3);buttons.add(c4);
-		buttons.add(c5);buttons.add(c6);buttons.add(c7);buttons.add(c8);
-		
+				
 		for(int i=0;i<1;i++) {
-			int num = new Random().nextInt(25);
+			int num = new Random().nextInt(24);
 			buttons.get(num).setText("mole!");
-			for(JButton button: buttons) {
-				button.addActionListener(this);
-			}
-		}
-		
-		
+		}		
 	}
 	
-	public void drawButton(int num) {
-		run();
-			
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -136,23 +94,43 @@ public class WhackAMole implements ActionListener {
 		// TODO Auto-generated method stub
 		JButton clicked = (JButton)e.getSource();
 		
-		if(clicked.getText().equals("mole!")) {
-			score++;
+		if(missed+score==10) {
+			endGame(time,score);
 			frame.dispose();
-			clicked.setText("");
-			run();
+			missed=0;
+			score=0;
 			
 		}else {
-			speak("Missed!");
-			missed++;
-			frame.getDefaultCloseOperation();
+		
+			if(clicked.getText().equals("")) {
+				speak("Missed!");
+				missed++;
+				System.out.println(missed);
+				col1.removeAll();
+				col2.removeAll();
+				col3.removeAll();
+				main.removeAll();
+				for(int i=0;i<1;i++) {
+					run();
+				}
+			}
+			
+			if(clicked.getText().equals("mole!")) {
+				score++;
+				clicked.setText("");
+				speak("Correct!");
+				col1.removeAll();
+				col2.removeAll();
+				col3.removeAll();
+				main.removeAll();
+				for(int i=0;i<1;i++) {
+					run();
+				}
+			}
 		}
-		
-	
-		
 	}
 	
-	void speak(String words) {
+	public void speak(String words) {
 	     try {
 	          Runtime.getRuntime().exec("say " + words).waitFor();
 	     } catch (Exception e) {
