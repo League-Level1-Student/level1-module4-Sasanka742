@@ -1,5 +1,6 @@
 package _11_whack_a_mole;
 
+import java.applet.AudioClip;
 import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
+import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -31,6 +33,8 @@ public class WhackAMole implements ActionListener {
 	
 	
 	public void run() {
+		
+  		 
 		
 		ArrayList<JButton> buttons = new ArrayList<JButton>();
 		
@@ -100,8 +104,13 @@ public class WhackAMole implements ActionListener {
 			missed=0;
 			score=0;
 			
-		}else {
-		
+		}else if(missed==5){
+			speak("Game Over");
+			endGame(time,score);
+			frame.dispose();
+			missed=0;
+			score=0;
+		}else{		
 			if(clicked.getText().equals("")) {
 				speak("Missed!");
 				missed++;
@@ -116,6 +125,8 @@ public class WhackAMole implements ActionListener {
 			}
 			
 			if(clicked.getText().equals("mole!")) {
+				AudioClip sound = JApplet.newAudioClip(getClass().getResource("creepy-noise.wav"));
+				sound.play();
 				score++;
 				clicked.setText("");
 				speak("Correct!");
@@ -144,14 +155,5 @@ public class WhackAMole implements ActionListener {
 	          + ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked)
 	          + " moles per second.");
 	}
-
-	//insert all buttons in a list
-	
-	// make a for loop for the array . get a random number in the list(position)
-	// set the result item of list's name to "mole!"
-	//also make a enhanced loop that adds action listener to all buttons in the array
-
-	//if the 
-	
 	
 }
